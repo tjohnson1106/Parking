@@ -49,8 +49,8 @@ class Map extends Component {
 
   renderParkings() {
     return (
-      <ScrollView horizontal contentContainerStyle={styles.parkings}>
-        {parkings.map()}
+      <ScrollView horizontal contentContain erStyle={styles.parkings}>
+        {parkings.map((parking) => this.renderParking(parking))}
       </ScrollView>
     );
   }
