@@ -1,7 +1,18 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Text, ScrollView, Dimensions } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  Dimensions,
+  TouchableOpacity
+} from "react-native";
+
+//08102019 TODO: Add icons
 
 import MapView from "react-native-maps";
+
+const { height, width } = Dimensions.get("screen");
 
 const parkings = [
   {
@@ -10,7 +21,11 @@ const parkings = [
     price: 5,
     rating: 4.2,
     spots: 20,
-    free: 10
+    free: 10,
+    location: {
+      latitude: 37.78735,
+      longitude: -122.4334
+    }
   },
   {
     id: 2,
@@ -18,7 +33,11 @@ const parkings = [
     price: 7.5,
     rating: 1.8,
     spots: 25,
-    free: 20
+    free: 20,
+    location: {
+      latitude: 37.78845,
+      longitude: -122.4344
+    }
   },
   {
     id: 3,
@@ -26,11 +45,18 @@ const parkings = [
     price: 10,
     rating: 4.9,
     spots: 50,
-    free: 25
+    free: 25,
+    location: {
+      latitude: 37.78615,
+      longitude: -122.4314
+    }
   }
 ];
 
 class Map extends Component {
+  state = {
+    hours: {}
+  };
   renderHeader() {
     return (
       <View style={styles.header}>
@@ -40,16 +66,56 @@ class Map extends Component {
   }
 
   renderParking(item) {
+    const { hours } = this.state;
     return (
       <View key={`parking-${item.id}`} style={styles.parking}>
-        <Text>{item.title}</Text>
+        <View style={{ flex: 1, flexDirection: "column" }}>
+          <Text style={{ fontSize: 16 }}>
+            x{item.spots} {item.title}
+          </Text>
+          <View
+            style={{ borderRadius: 6, borderColor: "grey", borderWidth: 0.5, padding: 4 }}
+          >
+            <Text style={{ fontSize: 16 }}>>05:00 hrs</Text>
+          </View>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "column"
+          }}
+        >
+          <View style={{ flex: 1, justifyContent: "center" }}>
+            <Text>${item.price}</Text>
+            <Text>{item.rating}</Text>
+          </View>
+          <TouchableOpacity style={styles.buy}>
+            <View style={{ flex: 1, justifyContent: "center" }}>
+              <Text style={{ fontSize: 24, color: "#fff" }}>${item.price * 2}</Text>
+              <Text style={{ color: "#fff" }}>
+                {item.price}x{hours[item.id]} hrs
+              </Text>
+            </View>
+            <View style={{ flex: 0.5, justifyContent: "center", alignItems: "center" }}>
+              <Text style={{ fontSize: 24, color: "#fff" }}>{}</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
 
   renderParkings() {
     return (
-      <ScrollView horizontal contentContain erStyle={styles.parkings}>
+      <ScrollView
+        horizontal
+        pagingEnabled
+        scrollEnabled
+        showsHorizontalScrollIndicator={false}
+        snapToAlignment="center"
+        onScrollEndDrag={(props) => console.log("onScroll", props)}
+        style={styles.parkings}
+      >
         {parkings.map((parking) => this.renderParking(parking))}
       </ScrollView>
     );
@@ -68,7 +134,7 @@ class Map extends Component {
           }}
           style={styles.map}
         />
-        {this.renderParking()}
+        {this.renderParkings()}
       </View>
     );
   }
@@ -87,17 +153,25 @@ const styles = StyleSheet.create({
     flex: 3
   },
   parkings: {
-    flex: 1,
     position: "absolute",
     right: 0,
     left: 0,
-    bottom: 0
+    bottom: 24
   },
   parking: {
+    flexDirection: "row",
     backgroundColor: "#fff",
     borderRadius: 6,
     padding: 12,
-    marginHorizontal: 24
+    marginHorizontal: 24,
+    width: width - 24 * 2
+  },
+  buy: {
+    flex: 1,
+    // flexDirection: "row",
+    padding: 12,
+    borderRadius: 6,
+    backgroundColor: "red"
   }
 });
 
