@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableOpacity
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 //08102019 TODO: Add icons
 
@@ -85,9 +86,41 @@ class Map extends Component {
             flexDirection: "column"
           }}
         >
-          <View style={{ flex: 1, justifyContent: "center" }}>
-            <Text>${item.price}</Text>
-            <Text>{item.rating}</Text>
+          <View style={{ flex: 0.5, justifyContent: "center" }}>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "space-between"
+              }}
+            >
+              <Ionicons name="ios-pricetag">
+                <Text
+                  style={{
+                    paddingLeft: 12
+                  }}
+                >
+                  ${item.price}
+                </Text>
+              </Ionicons>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "space-between"
+              }}
+            >
+              <Ionicons name="ios-star">
+                <Text
+                  style={{
+                    paddingLeft: 12
+                  }}
+                >
+                  {item.rating}
+                </Text>
+              </Ionicons>
+            </View>
           </View>
           <TouchableOpacity style={styles.buy}>
             <View style={{ flex: 1, justifyContent: "center" }}>
@@ -160,18 +193,18 @@ const styles = StyleSheet.create({
   },
   parking: {
     flexDirection: "row",
-    backgroundColor: "#fff",
+    backgroundColor: "white",
     borderRadius: 6,
     padding: 12,
     marginHorizontal: 24,
     width: width - 24 * 2
   },
   buy: {
-    flex: 1,
-    // flexDirection: "row",
+    flex: 1.25,
+    flexDirection: "row",
     padding: 12,
-    borderRadius: 6,
-    backgroundColor: "red"
+    backgroundColor: "red",
+    borderRadius: 6
   }
 });
 
